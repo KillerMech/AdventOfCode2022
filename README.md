@@ -6,3 +6,5 @@ Open main.rs in your editor of choice and change what is in the body
 of the function to align with whatever day you would like it to run.
 Finally, you just need to cargo run it. I don't know if anyone will
 ever see this, but if you do, then I hope it helps!
+
+Make sure you change out the input files for your input files.
