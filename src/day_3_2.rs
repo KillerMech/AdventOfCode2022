@@ -25,9 +25,9 @@ pub fn day_3_2(){
                     let rucksack_return = rucksack_badge(elf_rucksacks.clone());
                     //Same as last time for our calculations
                     if rucksack_return.is_uppercase() {
-                         rucksack_sum += rucksack_return as u32 - 38;
+                        rucksack_sum += rucksack_return as u32 - 38;
                     } else {
-                         rucksack_sum += rucksack_return as u32 - 96;
+                        rucksack_sum += rucksack_return as u32 - 96;
                     }
                 }
             }
@@ -44,6 +44,8 @@ fn rucksack_badge(rucksack: [String; 3]) -> char {
     for ch in rucksack[0].chars() {
         if rucksack[1].contains(ch) && rucksack[2].contains(ch) {
             badge = ch;
+            //forgot the break in the first commit so it was wrong.
+            break;
         }
         //in case we don't find something in the alphabet we return 'a' rather
         //than panic
