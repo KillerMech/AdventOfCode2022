@@ -3,42 +3,55 @@ use std::io::{self, BufRead};
 use std::path::Path;
 
 pub fn day_3_2(){
-    let mut elf_rucksacks: [String; 3];
     let mut elf_counter = 0;
+    //We know exactly what type of data we are ingesting and how much
+    //so an array is very appropriate here
+    let mut elf_rucksacks: [String; 3] = ["_".to_string(),"_".to_string(),"_".to_string()];
     let mut rucksack_sum = 0;
     // File rucksacks.txt must exist in the current path
     if let Ok(lines) = read_lines("./rucksacks.txt") {
         // Consumes the iterator, returns an (Optional) String
         for line in lines {
-            let mut rucksack_return = '_';
             if let Ok(current_sack) = line {
-                    let current_string = current_sack.to_string();
-                    elf_rucksacks[elf_counter] = current_string;
-                    elf_counter += 1;
-                    if elf_counter == 3 {
-                        elf_counter = 0;
-                        rucksack_return = rucksack_badge(&mut elf_rucksacks);
-                        if rucksack_return.is_uppercase() {
-                            rucksack_sum += rucksack_return as u32 - 38;
-                        } else {
-                            rucksack_sum += rucksack_return as u32 - 96;
-                        }
+                //convert the line to a string so we can work with it
+                let current_string = current_sack.to_string();
+                //put the string in each part of our array
+                elf_rucksacks[elf_counter] = current_string;
+                elf_counter += 1;
+                //we know we've consumed 3 sacks, so we'll evaluate this set
+                if elf_counter == 3 {
+                    elf_counter = 0;
+                    //Send our array to the function that will return the badge
+                    let rucksack_return = rucksack_badge(elf_rucksacks.clone());
+                    //Same as last time for our calculations
+                    if rucksack_return.is_uppercase() {
+                         rucksack_sum += rucksack_return as u32 - 38;
+                    } else {
+                         rucksack_sum += rucksack_return as u32 - 96;
                     }
                 }
             }
         }
+    }
     println!("Total sum of rucksacks is {}", rucksack_sum);
 }
 
-fn rucksack_badge(rucksack: &mut [&str]) -> char {
-    let mut rucksacks = rucksack;
-    let badge: char;
+//Function that returns the badge we use to calculate score
+fn rucksack_badge(rucksack: [String; 3]) -> char {
+    let mut badge: char = '_';
 
-    for ch in rucksacks[0].chars() {
-        if rucksacks[1].contains(ch) && rucksacks[2].contains(ch) {
+    //use chars() and contains() functions with some logic to find the badge
+    for ch in rucksack[0].chars() {
+        if rucksack[1].contains(ch) && rucksack[2].contains(ch) {
             badge = ch;
         }
+        //in case we don't find something in the alphabet we return 'a' rather
+        //than panic
+        else {
+            badge = 'a';
+        }
     }
+    //return the badge
     badge
 }
 
